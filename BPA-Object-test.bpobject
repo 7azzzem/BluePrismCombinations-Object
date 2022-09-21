@@ -1,0 +1,356 @@
+﻿<process name="test" version="1.0" bpversion="7.1.1.65484" narrative="&#xD;&#xA;" byrefcollection="true" type="object" runmode="Exclusive" preferredid="492caa21-0054-46fb-8e09-055221677700">
+  <appdef>
+    <element name="Application Root">
+      <id>3780e560-f3b9-49ac-937d-54c523f72262</id>
+      <type>Application</type>
+      <basetype>Application</basetype>
+      <datatype>unknown</datatype>
+      <diagnose>False</diagnose>
+    </element>
+  </appdef>
+  <view>
+    <camerax>0</camerax>
+    <cameray>0</cameray>
+    <zoom version="2">1.25</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <subsheet subsheetid="e92daa3f-eca5-483f-9a86-958054620acf" type="CleanUp" published="True">
+    <name>Clean Up</name>
+    <view>
+      <camerax>0</camerax>
+      <cameray>0</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <subsheet subsheetid="11c955f8-9d5c-4b8b-8273-4db39226ac9a" type="Normal" published="True">
+    <name>Combinations sum </name>
+    <view>
+      <camerax>-187</camerax>
+      <cameray>46</cameray>
+      <zoom version="2">1.25</zoom>
+    </view>
+  </subsheet>
+  <stage stageid="8176fd3f-69c4-48e9-90a8-4c92d868491d" name="Start" type="Start">
+    <loginhibit />
+    <display x="15" y="-105" />
+    <onsuccess>f39e9754-eceb-41ee-8357-eddcab977acf</onsuccess>
+  </stage>
+  <stage stageid="f39e9754-eceb-41ee-8357-eddcab977acf" name="End" type="End">
+    <loginhibit />
+    <display x="15" y="90" />
+  </stage>
+  <stage stageid="7896db05-0c09-439e-955f-2f531df2d08d" name="Stage1" type="ProcessInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+    <references>
+      <reference>System.dll</reference>
+      <reference>System.Data.dll</reference>
+      <reference>System.Xml.dll</reference>
+      <reference>System.Drawing.dll</reference>
+      <reference>C:\Program Files\Blue Prism Limited\Blue Prism Automate\System.Linq.dll</reference>
+    </references>
+    <imports>
+      <import>System</import>
+      <import>System.Drawing</import>
+      <import>System.Data</import>
+      <import>System.Collections.Generic</import>
+      <import>System.Linq</import>
+    </imports>
+    <language>csharp</language>
+    <globalcode><![CDATA[]]></globalcode>
+    <code><![CDATA[static List<string> differentFlagPermutations(int X, List<string> arr)
+{
+	List<string> ml = new List<string>();
+	ml = arr;
+	/*for(int i = 0; i < ml.Count; i++)
+	{
+	Console.Write(ml[i] + " ");
+	}*/
+
+	int count = ml.Count;
+
+	// Traverse all possible lengths
+	for(int z = 0; z < X - 1; z++)
+	{
+
+	// Stores all combinations
+	// of length z
+	List<string> tmp = new List<string>();
+
+	// Traverse the array
+	for(int i = 0; i < arr.Count; i++)
+	{
+		for(int k = 0; k < ml.Count; k++)
+		{
+		if (arr[i] != ml[k])
+		{
+
+			// Generate all
+			// combinations of length z
+			tmp.Add(ml[k] + arr[i]);
+			count += 1;
+		}
+		}
+	}	
+
+/* Print all combinations of length z
+	for(int i = 0; i < tmp.Count; i++)
+	{
+		Console.Write(tmp[i] + " ");
+	}
+*/
+	// Replace all combinations of length z - 1
+	// with all combinations of length z
+	ml = tmp;
+	}
+	return ml;
+}
+private static List<string> ConvertDataTable(DataTable dt)
+{
+    List<string> data = new List<string>();
+    foreach (DataRow row in dt.Rows)
+    {
+        string item = row["ColumnName"].ToString();
+        data.Add(item);
+    }
+    return data;
+}
+static DataTable ConvertListToDataTable(List<string> list)
+{
+    // New table.
+    DataTable table = new DataTable();
+	table.Columns.Add("Column Name");
+        
+    /*// Get max columns.
+    int columns = 0;
+    foreach (var array in list)
+    {
+    if (array.Length > columns)
+        {
+            columns = array.Length;
+        }
+    }
+            
+    // Add columns.
+    for (int i = 0; i < columns; i++)
+        {
+            table.Columns.Add();
+        }
+     */       
+            // Add rows.
+    foreach (var array in list)
+        {
+            table.Rows.Add(array);
+        }
+            
+        return table;
+    
+}
+ private static int OrderDigits(int number, bool asc)
+    {   
+        // Extract each digit into an array
+        int[] digits = new int[(int)Math.Floor(Math.Log10(Math.Abs(number)) + 1)];
+        for (int i = 0; i < digits.Length; i++)
+        {
+            digits[i] = number % 10;
+            number /= 10;
+        }
+
+        // Order the digits
+        for (int i = 0; i < digits.Length; i++)
+        {
+            for (int j = i + 1; j < digits.Length; j++)
+            {               
+                if ((!asc && digits[j] > digits[i]) ||
+                    (asc && digits[j] < digits[i]))
+                {
+                    int temp = digits[i];
+                    digits[i] = digits[j];
+                    digits[j] = temp;
+                }
+            }
+        }
+
+        // Turn the array of digits back into an integer
+        int result = 0;     
+        for (int i = digits.Length - 1; i >= 0; i--)
+        {
+            result += digits[i] * (int)Math.Pow(10, digits.Length - 1 - i);
+        }
+
+        return result;
+    }
+
+	static string removedupes(string s)
+{
+    string newString = string.Empty;
+    List<char> found = new List<char>();
+    foreach(char c in s)
+    {
+       if(found.Contains(c))
+          continue;
+
+       newString+=c.ToString();
+       found.Add(c);
+    }
+    return newString;
+}
+
+
+
+]]></code>
+  </stage>
+  <stage stageid="41bbf0ee-b2c2-4f29-9e1e-f63af947fa87" name="Clean Up" type="SubSheetInfo">
+    <subsheetid>e92daa3f-eca5-483f-9a86-958054620acf</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="d1e93570-2f9f-4392-88e6-9c0659dde617" name="Start" type="Start">
+    <subsheetid>e92daa3f-eca5-483f-9a86-958054620acf</subsheetid>
+    <loginhibit />
+    <display x="15" y="-105" />
+    <onsuccess>7a79a9bb-b897-46fc-b782-7f8f6dd6e022</onsuccess>
+  </stage>
+  <stage stageid="7a79a9bb-b897-46fc-b782-7f8f6dd6e022" name="End" type="End">
+    <subsheetid>e92daa3f-eca5-483f-9a86-958054620acf</subsheetid>
+    <loginhibit />
+    <display x="15" y="90" />
+  </stage>
+  <stage stageid="6029c34d-a01d-4938-a0ad-e59813e4b267" name="Combinations sum " type="SubSheetInfo">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="a3a5e9df-29ca-4824-a172-28d27848e2da" name="Start" type="Start">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit />
+    <display x="15" y="-105" />
+    <inputs>
+      <input type="collection" name="In_Collection" stage="In_Collection" />
+      <input type="number" name="Max Number of Digits" stage="number" />
+    </inputs>
+    <onsuccess>34af61c3-242c-4cd0-a86d-b133d0760988</onsuccess>
+  </stage>
+  <stage stageid="e3ab4d36-6ea9-45f1-a53e-827a78341bec" name="End" type="End">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit />
+    <display x="15" y="90" />
+    <outputs>
+      <output type="collection" name="Collection Out" stage="Collection_Out" />
+    </outputs>
+  </stage>
+  <stage stageid="b9497df2-5135-4261-8d36-79ede08ea2e3" name="" type="Note">
+    <subsheetid>e92daa3f-eca5-483f-9a86-958054620acf</subsheetid>
+    <narrative>Clean Up Page
+
+This is an optional page where you might choose to perform some finalisation (or "cleanup") tasks as your business object is closed down.
+
+The cleanup action will be called automatically immediately after closing your business object at the end of a business process.
+
+You will not be able to call this action from a business process, nor will it be called at any other time than before the disposal of the business object.</narrative>
+    <display x="-180" y="60" w="180" h="230" />
+  </stage>
+  <stage stageid="58d18de1-3a01-436c-aed2-6770f4cef840" name="" type="Note">
+    <narrative>Initialise Page
+
+This is an optional page where you might choose to perform some initialisation tasks after your business object is loaded.
+
+The initialise action will be called automatically immediately after loading your business object.
+
+You will not be able to call this action from a business process, nor will it be called at any other time than after the creation of the object.</narrative>
+    <display x="-180" y="60" w="180" h="230" />
+  </stage>
+  <stage stageid="34af61c3-242c-4cd0-a86d-b133d0760988" name="Code1" type="Code">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit />
+    <display x="15" y="0" />
+    <inputs>
+      <input type="collection" name="Input_Collection" expr="[In_Collection]" />
+      <input type="number" name="Number_of_Digits" expr="[number]" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Collection_Out" stage="Collection_Out" />
+    </outputs>
+    <onsuccess>e3ab4d36-6ea9-45f1-a53e-827a78341bec</onsuccess>
+    <code><![CDATA[List<string> arr = ConvertDataTable(Input_Collection);
+
+arr = differentFlagPermutations(Convert.ToInt32(Number_of_Digits), arr);
+
+Collection_Out = ConvertListToDataTable(arr);
+Collection_Out.Columns.Add("Sum");
+
+foreach (DataRow row1 in Collection_Out.Rows)
+{
+	row1["Column Name"] = removedupes(row1["Column Name"].ToString());
+	row1["Column Name"] = OrderDigits(Convert.ToInt32(row1["Column Name"]),true);
+}
+	
+Collection_Out = Collection_Out.DefaultView.ToTable(true);
+
+foreach (DataRow row1 in Collection_Out.Rows)
+{
+	int sum = 0;
+	foreach(char item in row1["Column Name"].ToString().Trim())
+	{
+		sum = sum + Convert.ToInt32(item-'0');
+	}
+	row1["Sum"] = sum.ToString();
+}]]></code>
+  </stage>
+  <stage stageid="06c12c72-7ba4-45e7-b2ac-9a87855b00d0" name="number" type="Data">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit />
+    <display x="-195" y="45" />
+    <datatype>number</datatype>
+    <initialvalue>4</initialvalue>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="fb3d9880-b609-481d-aaa2-84c85b09a1cb" name="Collection_Out" type="Collection">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <display x="-195" y="15" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="8bc6c5b6-4420-405a-b0c4-6ed954ae27db" name="In_Collection" type="Collection">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit />
+    <display x="-195" y="-15" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="ColumnName" type="text" />
+    </collectioninfo>
+    <initialvalue>
+      <row>
+        <field name="ColumnName" type="text" value="1" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="2" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="3" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="4" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="5" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="6" />
+      </row>
+      <row>
+        <field name="ColumnName" type="text" value="9" />
+      </row>
+    </initialvalue>
+  </stage>
+  <stage stageid="14fb6af7-3aeb-4e1c-a5e0-26085ae8c8b1" name="Note1" type="Note">
+    <subsheetid>11c955f8-9d5c-4b8b-8273-4db39226ac9a</subsheetid>
+    <loginhibit onsuccess="true" />
+    <narrative>In Collection Made of one column of name "ColumnName"
+Out Collection Made of two Columns "Column Name" AND "Sum"</narrative>
+    <display x="-465" y="30" w="390" h="180" />
+    <font family="Segoe UI" size="20" style="Regular" color="000000" />
+  </stage>
+</process>
